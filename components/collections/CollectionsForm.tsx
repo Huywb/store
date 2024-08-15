@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
+import Upload from '../custom-ui/Upload'
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -76,6 +77,10 @@ const CollectionsForm = () => {
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
+                  <Upload value={field.value ? [field.value] : []} 
+                          onChange={(url)=>field.onChange(url)}
+                          onRemove={()=>field.onChange('')}
+                  ></Upload>
                 </FormControl>
                 <FormMessage />
               </FormItem>
