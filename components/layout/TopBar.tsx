@@ -1,11 +1,11 @@
 'use client'
-import { Menu } from '@/app/libs/contants'
+import { Menu } from '@/lib/contants'
 import { UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import logo from '../../../public/logo3.png'
+import logo from '../../public/logo3.png'
 import { CiMenuBurger } from "react-icons/ci";
 
 
@@ -14,7 +14,7 @@ const TopBar = () => {
     const [dropdown,setDropdown] = useState(false)
 
   return (
-    <div className='items-center z-20 left-0 right-0 sticky flex justify-between px-6 bg-blue-100 lg:hidden'>
+    <div className='items-center z-20 left-0 top-0 sticky flex justify-between px-6 bg-blue-100 lg:hidden'>
         <Image src={logo} alt='logo' width={100} height={50}></Image>
         <div className='flex  gap-4  max-md:hidden'>
             {Menu.map((item:any,index:number)=>(

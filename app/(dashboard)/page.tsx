@@ -5,7 +5,6 @@ export default function Home() {
   return (
     <div>
       <UserButton></UserButton>
-      abc
-    </div>  
+      </div>  
   );
 }
