@@ -1,6 +1,6 @@
 type collectionsType = {
     _id:string,
-    title:String,
+    title:string,
     description:string,
     image:string,
     products: ProductType[]

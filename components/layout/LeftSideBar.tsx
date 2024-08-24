@@ -25,7 +25,7 @@ const LeftSideBar = () => {
             ))}
         </div>
         <div className='flex gap-2 items-start w-[100%]'>
-            <UserButton ></UserButton>
+            <UserButton></UserButton>
             <p className='font-bold text-xl'>Edit Profile</p>
         </div>
     </div>

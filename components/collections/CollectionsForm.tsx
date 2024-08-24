@@ -27,14 +27,19 @@ const formSchema = z.object({
   description: z.string().min(10).max(500).trim(),
   image: z.string()
 })
-const CollectionsForm = () => {
+
+interface CollectionDetailsProp{
+  initialData?: collectionsType | null 
+}
+
+const CollectionsForm:React.FC<CollectionDetailsProp> = ({initialData}) => {
 
   const [isloading,setIsloading] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData ? initialData : {  
       title: "",
-      description: '',
+      description: '',  
       image: ''
     },
   })
@@ -43,13 +48,15 @@ const CollectionsForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) =>{
     try {
       setIsloading(true)
-      const res = await fetch("/api/collections",{
+      const url = initialData ? `/api/collections/${initialData._id}` : "/api/collections"
+      const res = await fetch(url,{
         method: 'POST',
         body: JSON.stringify(values)
       })
       if(res.ok){
         setIsloading(false)
-        toast.success("Collection created")
+        toast.success(`Collection ${initialData ? 'updated' : 'created'}`)
+        window.location.href = "/collections"
         router.push("/collections")
       }
     } catch (error) {
@@ -59,7 +66,7 @@ const CollectionsForm = () => {
   }
   return (
     <div className='p-18'>
-        <p className='font-bold text-2xl'>Create Collection</p>
+        <p className='font-bold text-2xl'>{initialData ? 'Update' : 'Create'} Collection</p>
         <Separator className='my-4'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -106,7 +113,7 @@ const CollectionsForm = () => {
             )}
           />
           <div className='flex gap-10'>
-           <Button type="submit" className='bg-[#00e5ff]'>Submit</Button>
+           <Button type="submit" className='bg-[#00e5ff]'> Submit</Button>
            <Button type="button" onClick={()=>router.push('/collections')} className='bg-[#00e5ff]'>DisCard</Button>
           </div>
       </form>
