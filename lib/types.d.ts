@@ -3,7 +3,7 @@ type collectionsType = {
     title:string,
     description:string,
     image:string,
-    products: ProductType[]
+    products: productsType[]
 }
 
 type productsType = {
@@ -16,8 +16,8 @@ type productsType = {
     tags:[string],
     sizes:[string],
     colors:[string],
-    price:Number,
-    expense:Number,
+    price:number,
+    expense:number,
     createAt: Date,
     updateAt: Date
 }

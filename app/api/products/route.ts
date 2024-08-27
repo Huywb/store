@@ -1,3 +1,4 @@
+import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectDB } from "@/lib/mongooseDB";
 import { auth } from "@clerk/nextjs/server";
@@ -34,7 +35,30 @@ export const POST = async(req:NextRequest)=>{
 
         await newProduct.save()
 
+        if(collections){
+            for(const collectionId of collections){
+                const collection = await Collection.findById(collectionId)
+                console.log(collection)
+                if(collection){
+                    collection.products.push(newProduct._id)
+                    await collection.save()
+                }
+            }
+        }
+
         return NextResponse.json(newProduct,{status:200})
+    } catch (error) {
+        console.log(error)
+        return new NextResponse("Internal Error",{status:500})
+    }
+}
+
+export const GET = async(req:NextRequest)=>{
+    try {
+        await connectDB()
+
+        const products = await Product.find().sort({createAt:"desc"}).populate({path:'collections',model: Collection})
+        return NextResponse.json(products,{status:200})
     } catch (error) {
         console.log(error)
         return new NextResponse("Internal Error",{status:500})

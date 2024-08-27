@@ -12,11 +12,14 @@ export const columns: ColumnDef<collectionsType>[] = [
     {
       accessorKey: "products",
       header: "Products",
-      cell: ({row})=> <p>{row.original.products ?row.original.products : 0 }</p>
+      cell: ({row})=> {
+        const products = row.original.products || [];
+        return <p>{products.length}</p>;
+      },
 
     },
     {
         id:'actions',
-        cell: ({row})=><Delete id={row.original._id}></Delete>
+        cell: ({row})=><Delete item='collections' id={row.original._id}></Delete>
     },
   ]

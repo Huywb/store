@@ -1,4 +1,5 @@
 import Collection from "@/lib/models/Collection";
+import Product from "@/lib/models/Product";
 import { connectDB } from "@/lib/mongooseDB";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -60,6 +61,11 @@ export const DELETE = async(req:NextRequest, {params}: {params:{collectionId: st
 
     await connectDB()
     await Collection.findByIdAndDelete(params.collectionId)
+
+    await Product.updateMany(
+        {collections: params.collectionId},
+        {$pull: {collections: params.collectionId}}
+    )
     return new NextResponse("Collection is deleted",{status:200})
  } catch (error) {
     console.log(error)

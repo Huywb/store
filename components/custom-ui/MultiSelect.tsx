@@ -41,7 +41,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   return (
     <Command className="overflow-visible bg-white">
       <div className="flex gap-1 flex-wrap border rounded-md">
-        {selected.map((collection)=>(
+        {selected?.map((collection)=>(
           <Badge key={collection._id}>{collection.title}
           <button className="ml-1 hover:text-red-600" onClick={()=>onRemove(collection._id)}><IoMdClose></IoMdClose></button>
           </Badge>
