@@ -22,7 +22,6 @@ export const GET = async(req:NextRequest,{params}:{params:{productId: string}}) 
 
 export const POST = async(req: NextRequest,{params} : {params:{productId:string}})=>{
     try {
-        console.log('dsa',params)
         const {userId} = auth()
         if(!userId){
             return new NextResponse('Unauthorized',{status:401})
@@ -36,9 +35,25 @@ export const POST = async(req: NextRequest,{params} : {params:{productId:string}
         }
         const {title,description,media,category,collections,tags,sizes,colors,price,expense } = await req.json()
 
-        if(!title || !media){
-            return new NextResponse('Title and image are required',{status:400})
+        if(!title || !description || !media || !category || !price|| !expense){
+            return new NextResponse('All data are required',{status:400})
         }
+
+        const addColection = collections.filter((collectionId:string)=>!product.collections.includes(collectionId))
+
+        const removeCollection = product.collections.filter((collectionId:string)=>!collections.includes(collectionId))
+
+        await Promise.all([
+            ...addColection.map((collectionId:string)=>
+            Collection.findByIdAndUpdate(collectionId,{
+                $push:{products: product._id}
+            })),
+            ...removeCollection.map((collectionId:string)=>
+            Collection.findByIdAndUpdate(collectionId,{
+                $pull:{products:product._id}
+            })
+            )
+        ])
 
         product = await Product.findByIdAndUpdate(params.productId,{title,description,media,category,collections,tags,sizes,colors,price,expense},{new:true})
 
